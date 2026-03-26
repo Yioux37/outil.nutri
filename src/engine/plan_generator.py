@@ -20,15 +20,33 @@ def get_recommended_formats(sport: str, digestive_tolerance: str) -> list[str]:
 
 
 def generate_plan(user: User, activity: Activity) -> Plan:
-    carbs = get_carbs_target(activity.sport, activity.intensity_level, user.digestive_tolerance)
-    fluids = get_fluids_target(activity.sport, activity.temperature_c)
-    sodium = get_sodium_target(activity.sport, user.sweat_profile)
+    carbs = get_carbs_target(
+        activity.sport,
+        activity.duration_minutes,
+        activity.intensity_level,
+        user.digestive_tolerance,
+    )
+
+    fluids = get_fluids_target(
+        activity.sport,
+        activity.temperature_c,
+        activity.duration_minutes,
+        user.sweat_profile,
+    )
+
+    sodium = get_sodium_target(
+        activity.sport,
+        activity.temperature_c,
+        user.sweat_profile,
+    )
+
     risk = get_risk_level(
         activity.duration_minutes,
         activity.intensity_level,
         activity.temperature_c,
         user.digestive_tolerance,
     )
+
     formats = get_recommended_formats(activity.sport, user.digestive_tolerance)
 
     return Plan(
