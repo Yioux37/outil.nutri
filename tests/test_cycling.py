@@ -11,6 +11,9 @@ def test_cycling_plan_basic():
         digestive_tolerance="medium",
         sweat_profile="medium",
         available_container_types=["2x750ml_bidons"],
+        gut_training_level="basic",
+        weekly_training_hours=6.0,
+        longest_session_last_8_weeks=180,
     )
 
     activity = Activity(
