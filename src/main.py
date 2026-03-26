@@ -11,6 +11,9 @@ def main() -> None:
         digestive_tolerance="medium",
         sweat_profile="medium",
         available_container_types=["2x750ml_bidons"],
+        gut_training_level="moderate",
+        weekly_training_hours=8.0,
+        longest_session_last_8_weeks=240,
     )
 
     activity = Activity(
@@ -30,6 +33,15 @@ def main() -> None:
     print(f"Sodium/L: {plan.sodium_mg_per_l} mg")
     print(f"Formats: {', '.join(plan.recommended_formats)}")
     print(f"Risk: {plan.risk_level}")
+    print("--- Packaging ---")
+    print(f"Total fluids: {plan.total_fluids_ml} ml")
+    print(f"Total carbs: {plan.total_carbs_g} g")
+    print(f"Carrying capacity: {plan.carrying_capacity_ml} ml")
+    print(f"Estimated bottles/flasks needed: {plan.estimated_bottles}")
+    print(f"Estimated gels needed: {plan.estimated_gels}")
+    print("Notes:")
+    for note in plan.packaging_notes:
+        print(f"- {note}")
 
 
 if __name__ == "__main__":

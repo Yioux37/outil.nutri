@@ -2,6 +2,7 @@ from src.engine.carbs import get_carbs_target
 from src.engine.hydration import get_fluids_target
 from src.engine.sodium import get_sodium_target
 from src.engine.digestion import get_risk_level
+from src.engine.packaging import build_packaging_plan
 from src.models.plan import Plan
 from src.models.user import User
 from src.models.activity import Activity
@@ -25,6 +26,10 @@ def generate_plan(user: User, activity: Activity) -> Plan:
         activity.duration_minutes,
         activity.intensity_level,
         user.digestive_tolerance,
+        user.gut_training_level,
+        user.weekly_training_hours,
+        user.longest_session_last_8_weeks,
+        user.level,
     )
 
     fluids = get_fluids_target(
@@ -49,10 +54,24 @@ def generate_plan(user: User, activity: Activity) -> Plan:
 
     formats = get_recommended_formats(activity.sport, user.digestive_tolerance)
 
+    packaging = build_packaging_plan(
+        activity.sport,
+        activity.duration_minutes,
+        carbs,
+        fluids,
+        user.available_container_types,
+    )
+
     return Plan(
         carbs_per_hour=carbs,
         fluids_ml_per_hour=fluids,
         sodium_mg_per_l=sodium,
         recommended_formats=formats,
         risk_level=risk,
+        total_fluids_ml=packaging["total_fluids_ml"],
+        total_carbs_g=packaging["total_carbs_g"],
+        carrying_capacity_ml=packaging["carrying_capacity_ml"],
+        estimated_gels=packaging["estimated_gels"],
+        estimated_bottles=packaging["estimated_bottles"],
+        packaging_notes=packaging["packaging_notes"],
     )
